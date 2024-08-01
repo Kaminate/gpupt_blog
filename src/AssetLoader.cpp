@@ -23,6 +23,8 @@ void LoadAsset(std::string FilePath, scene *Scene, bool LoadInstances, bool Load
         LoadAssimp(FilePath, Scene, LoadInstances, LoadMaterials, LoadTextures, GlobalScale);
     }
 
+    Scene->PreProcess();
+
     for(int i=PrevShapesCount; i<Scene->Shapes.size(); i++)
     {
         Scene->BVH->AddShape(i);
@@ -41,6 +43,7 @@ void LoadAsset(std::string FilePath, scene *Scene, bool LoadInstances, bool Load
             NewMaterial.Colour = {0.725f, 0.71f, 0.68f};            
             Scene->MaterialNames.push_back("New Material");
         }
+
         Scene->MaterialBuffer->Reallocate(Scene->Materials.data(), Scene->Materials.size() * sizeof(material));
         
         for(int i=PrevInstancesCount; i<Scene->Instances.size();  i++)

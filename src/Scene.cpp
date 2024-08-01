@@ -4,6 +4,7 @@
 #include "App.h"
 #include "GLTFLoader.h"
 #include "AssimpLoader.h"
+#include "AssetLoader.h"
 #include "ImageLoader.h"
 #include "TextureArrayGL.h"
 #include "TextureArrayCu.cuh"
@@ -256,6 +257,7 @@ scene::scene()
     Camera.Controlled = 1;  
     this->CameraNames.push_back("Main Camera");
     
+#if 1
     LoadAssimp("resources/models/BaseShapes/Cube/Cube.obj", this, false, false, false, 1.0f);
     LoadAssimp("resources/models/BaseShapes/Cone/Cone.obj", this, false, false, false, 1.0f);
     LoadAssimp("resources/models/BaseShapes/Cylinder/Cylinder.obj", this, false, false, false, 1.0f);
@@ -268,16 +270,6 @@ scene::scene()
     BaseMaterial.Colour = {0.725f, 0.71f, 0.68f};
     this->MaterialNames.push_back("Base");
 
-    
-    // {
-    //     this->Instances.emplace_back();
-    //     instance &FloorInstance = this->Instances.back();
-    //     FloorInstance.Shape = (int)this->Shapes.size()-1;
-    //     FloorInstance.Material = (int)this->Materials.size()-1;
-    //     FloorInstance.Transform = glm::scale(glm::vec3(4, 4, 4));
-    //     this->InstanceNames.push_back("Floor");
-    // }
-    
     {
         this->Instances.emplace_back();
         instance &FloorInstance = this->Instances.back();
@@ -297,6 +289,8 @@ scene::scene()
     LightInstance.Transform = glm::translate(glm::mat4(1.0f), glm::vec3(0, 2, 0));
     this->InstanceNames.push_back("Light");
     this->MaterialNames.push_back("Light");
+
+#endif
     
 }
 
@@ -520,7 +514,7 @@ std::shared_ptr<scene> CreateCornellBox()
 #else
 
     // LoadGLTF("C:\\Users\\jacqu\\Documents\\Boulot\\Models\\2.0\\Sponza\\glTF\\Sponza.gltf", Scene, true);
-    LoadAssimp("C:\\Users\\jacqu\\Documents\\Boulot\\Models\\breakfast_room\\breakfast_room.obj", Scene, true);
+    LoadAsset("resources/Scenes/Breakfast/breakfast_room.obj", Scene.get(), true, true, true, 1.0f);
     // LoadAssimp("C:\\Users\\jacqu\\Documents\\Boulot\\Models\\breakfast_room\\breakfast_room.obj", Scene, true);
     // LoadAssimp("C:\\Users\\jacqu\\Documents\\Boulot\\Models\\salle_de_bain\\salle_de_bain.obj", Scene, true);
     // LoadAssimp("C:\\Users\\jacqu\\Documents\\Boulot\\Models\\bedroom\\iscv2.obj", Scene, true);
@@ -541,7 +535,7 @@ std::shared_ptr<scene> CreateCornellBox()
     environment &Sky = Scene->Environments.back();
     Sky.Emission = {1,1,1};
     Sky.EmissionTexture = 0;
-    Sky.Transform = glm::rotate(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    Sky.Transform = glm::rotate(glm::mat4( 1.0f ), glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 
 #endif

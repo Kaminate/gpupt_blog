@@ -1,5 +1,13 @@
+cmake_minimum_required(VERSION 3.28)
 project(gpuPathTracing)
 set(CMAKE_CXX_STANDARD 17)
+
+enable_language( CXX )
+enable_language( CUDA )
+
+if( MSVC )
+    set( CMAKE_VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
+endif()
 
 set(API_GL 0)
 set(API_CU 1)
@@ -64,13 +72,8 @@ include_directories(submodules/assimp/include)
 SET(OIDN_DEVICE_CPU FALSE)
 add_subdirectory(submodules/oidn)
 
-find_package(CUDA REQUIRED)
 enable_language(CUDA)
 
-set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -std=c++11)
-
-set(CUDA_LIB_DIR "$ENV{CUDA_PATH}/lib/x64")
-link_directories(${CUDA_LIB_DIR})
 
 set (sourceFiles
         src/Main.cpp
@@ -95,9 +98,8 @@ set (sourceFiles
         ${GLAD_SOURCE}
 )
 
-cuda_add_executable(PathTracer ${sourceFiles})
+add_executable(PathTracer ${sourceFiles})
 target_link_libraries(PathTracer glfw opengl32 OpenImageDenoise assimp)
-target_link_libraries(PathTracer ${CUDA_LIBRARIES})
 
 install(TARGETS PathTracer RUNTIME)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resources/ DESTINATION bin/resources)
