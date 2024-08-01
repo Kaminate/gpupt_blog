@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 project(gpuPathTracing)
+set(CMAKE_CXX_STANDARD 17)
 
 enable_language( CXX )
 enable_language( CUDA )
@@ -16,6 +17,7 @@ add_definitions(-DAPI_GL=${API_GL})
 add_definitions(-DAPI_CU=${API_CU})
 add_definitions(-DAPI=${API})
 
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/install)
 
 set(IMGUI_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/submodules/dearimgui ${CMAKE_CURRENT_SOURCE_DIR}/submodules/dearimgui/backends ${CMAKE_CURRENT_SOURCE_DIR}/submodules/ImGuizmo/)
 set(IMGUI_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/submodules/dearimgui/imgui_demo.cpp
@@ -49,7 +51,12 @@ set(FILEDIALOG_SOURCE ${FILEDIALOG_SOURCE} ${CMAKE_CURRENT_SOURCE_DIR}/submodule
 include_directories(${FILEDIALOG_INC_DIR})
 
 
-# # Glad
+# Glfw
+set(GLFW_INSTALL FALSE)
+add_subdirectory(submodules/glfw)
+include_directories(submodules/glfw/include)
+
+# Glad
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/submodules/glad/cmake" glad_cmake)
 glad_add_library(glad_gl_core_33 STATIC API gl:core=3.3)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/gladsources/glad_gl_core_33/include")
@@ -57,17 +64,10 @@ set(GLAD_SOURCE ${CMAKE_CURRENT_BINARY_DIR}/gladsources/glad_gl_core_33/src/gl.c
 
 # ASSIMP
 set(ASSIMP_INSTALL_PDB OFF)
+set(ASSIMP_BUILD_TESTS OFF)
 add_subdirectory(submodules/assimp)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/submodules/assimp/include")
 include_directories(submodules/assimp/include)
-
-# # OIDN
-SET(OIDN_DEVICE_CPU FALSE)
-add_subdirectory(submodules/oidn)
-
-set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -std=c++11)
-
-include_directories("gpuRT/include")
 
 set (sourceFiles
         src/Main.cpp
@@ -80,10 +80,13 @@ set (sourceFiles
         src/Scene.cpp
         src/BVH.cpp
         ${IMGUI_SOURCE}
+        ${FILEDIALOG_SOURCE}
+        ${GLAD_SOURCE}
 )
 
 add_executable(PathTracer ${sourceFiles})
-target_link_libraries(PathTracer glfw3 glew32 opengl32)
+target_link_libraries(PathTracer glfw opengl32 assimp)
+#assimp-vc143-mtd )
 
 install(TARGETS PathTracer RUNTIME)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/resources/ DESTINATION bin/resources)

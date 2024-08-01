@@ -1,5 +1,6 @@
 #pragma once
-#include <GL/glew.h>
+//#include <GL/glew.h>
+#include "glad/gl.h"
 #include <cuda_gl_interop.h>
 #include <memory>
 
