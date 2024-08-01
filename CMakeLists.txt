@@ -1,8 +1,16 @@
+cmake_minimum_required(VERSION 3.28)
 project(gpuPathTracing)
+
+enable_language( CXX )
+enable_language( CUDA )
+
+if( MSVC )
+    set( CMAKE_VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
+endif()
 
 set(API_GL 0)
 set(API_CU 1)
-set(API ${API_CU})
+set(API ${API_GL})
 
 add_definitions(-DAPI_GL=${API_GL})
 add_definitions(-DAPI_CU=${API_CU})
@@ -38,8 +46,6 @@ link_directories(${GLEW_LIB_DIR})
 set(GLM_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm)
 include_directories(${GLM_INC_DIR})
 
-find_package(CUDA REQUIRED)
-enable_language(CUDA)
 
 set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -std=c++11)
 
@@ -56,7 +62,7 @@ set (sourceFiles
         ${IMGUI_SOURCE}
 )
 
-cuda_add_executable(PathTracer ${sourceFiles})
+add_executable(PathTracer ${sourceFiles})
 target_link_libraries(PathTracer glfw3 glew32 opengl32)
 target_link_libraries(PathTracer ${CUDA_LIBRARIES})
 
