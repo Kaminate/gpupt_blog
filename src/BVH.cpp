@@ -317,7 +317,7 @@ tlas::tlas()
 tlas::tlas(std::vector<bvhInstance>* BVHList)
 {
     BLAS = BVHList;
-    NodesUsed=2;
+    NodesUsed=2; // this is immediatly stomped by NodesUsed=1 in tlas::Build
 }
 
 int tlas::FindBestMatch(std::vector<int>& List, int N, int A)
