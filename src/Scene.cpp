@@ -174,7 +174,7 @@ std::shared_ptr<scene> CreateCornellBox()
     // Scene->MaterialNames.push_back("TallBox");
 
     // LoadGLTF("C:\\Users\\jacqu\\Documents\\Boulot\\Models\\2.0\\MetalRoughSpheres\\glTF\\MetalRoughSpheres.gltf", Scene);
-    LoadGLTF("C:\\Users\\jacqu\\Documents\\Boulot\\Models\\2.0\\ToyCar\\glTF\\ToyCar.gltf", Scene);
+    LoadGLTF("resources/models/glTF-Sample-Models/2.0/ToyCar/glTF/ToyCar.gltf", Scene);
 
 
     Scene->Shapes.emplace_back();

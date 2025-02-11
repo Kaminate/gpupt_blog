@@ -4,7 +4,7 @@
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <tinygltf/tiny_gltf.h>
+#include "tiny_gltf.h"
 #include "stb_image_resize.h"
 
 #include <iostream>
@@ -412,7 +412,7 @@ void LoadGLTF(std::string FileName, std::shared_ptr<scene> Scene)
         
     if(!OK) 
     {
-        printf("Could not load model %s \n",FileName);
+        printf("Could not load model %s \n",FileName.c_str());
         return;
     }
 

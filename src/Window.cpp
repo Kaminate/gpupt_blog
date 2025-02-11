@@ -1,6 +1,6 @@
 #include "Window.h"
 
-#include <GL/glew.h>
+#include "glad/gl.h"
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
 
@@ -54,8 +54,7 @@ window::window(uint32_t Width, uint32_t Height)
 
     glfwSetWindowUserPointer(this->Handle, (void*)this);
 
-    bool Error = glewInit() != GLEW_OK;
-    if(Error)
+    if( !gladLoadGL( ( GLADloadfunc )glfwGetProcAddress ) )
     {
         std::cout << "Error Initializing glew" << std::endl;
         exit(0);
